@@ -19,7 +19,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -27,10 +27,16 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 private:
 	// Camera boom posititioning the camera behind the character
-	 UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivatetAccess  = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraBoom;
 
+	// Camera that follows the characetr
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
+	class UCameraComponent* FollowCamera;
+
 public:
-	// Returns CameraBoom subobject
+	// Creates a USpringArmComponent that returns CameraBoom
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; };
+	// Creates a UCameraComponent that returns FollowCamera
+	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; };
 };
