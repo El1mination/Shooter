@@ -30,6 +30,35 @@ void AShooterCharacter::BeginPlay()
 	
 }
 
+void AShooterCharacter::MoveForward(float Value)
+{
+	if ((Controller != nullptr) && (Value != 0.0f))
+	{
+		// find out which way is forward
+		const FRotator Rotation{ Controller->GetControlRotation() };
+		const FRotator YawRotation{ 0, Rotation.Yaw, 0 };
+
+		// Created an FVector called Direction and initialized it to the EAxis::X which is the forward vector of the rotation matrix
+		const FVector Direction{ FRotationMatrix{YawRotation}.GetUnitAxis(EAxis::X) };
+		AddMovementInput(Direction, Value);
+	}
+}
+
+void AShooterCharacter::MoveRight(float Value)
+{
+	if ((Controller != nullptr) && (Value != 0.0f))
+	{
+		// find out which way is forward
+		const FRotator Rotation{ Controller->GetControlRotation() };
+		const FRotator YawRotation{ 0, Rotation.Yaw, 0 };
+
+		// Created an FVector called Direction and initialized it to the EAxis::Y which is the right vector of the rotation matrix
+		const FVector Direction{ FRotationMatrix{YawRotation}.GetUnitAxis(EAxis::Y) };
+		AddMovementInput(Direction, Value);
+	}
+
+}
+
 // Called every frame
 void AShooterCharacter::Tick(float DeltaTime)
 {
@@ -41,6 +70,11 @@ void AShooterCharacter::Tick(float DeltaTime)
 void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
+	check(PlayerInputComponent);
+	
+	// Calls the MoveForward function when the BindAxis "MoveForward" is called
+	PlayerInputComponent->BindAxis("MoveForward", this, &AShooterCharacter::MoveForward);
+	// Calls the MoveRight function when the BindAxis "MoveRight" is called
+	PlayerInputComponent->BindAxis("MoveRight", this, &AShooterCharacter::MoveRight);
 }
 
