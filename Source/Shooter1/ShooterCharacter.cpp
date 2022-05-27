@@ -125,7 +125,7 @@ void AShooterCharacter::FireWeapon()
 		FVector CrosshairWorldDirection;
 		
 		// Get world position and direction of crosshairs
-		bool bScreenToWorld = UGameplayStatics::DeprojectScreenToWorld(UGameplayStatics::GetPlayerController(this, 0,
+		bool bScreenToWorld = UGameplayStatics::DeprojectScreenToWorld(UGameplayStatics::GetPlayerController(this, 0),
 			CrosshairLocation,
 			CrosshairWorldPosition,
 			CrosshairWorldDirection);
