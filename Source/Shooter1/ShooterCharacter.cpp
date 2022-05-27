@@ -108,6 +108,66 @@ void AShooterCharacter::FireWeapon()
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), MuzzleFlash, SocketTransform);
 		}
 
+		// Get current size of the viewport
+		FVector2D ViewportSize;
+
+		if (GEngine && GEngine->GameViewport)
+		{
+			GEngine->GameViewport->GetViewportSize(ViewportSize);
+		}
+
+		// Dividing by 2 on the X and Y will get the center of the screen
+		FVector2D CrosshairLocation(ViewportSize.X / 2.f, ViewportSize.Y / 2.f);
+		CrosshairLocation.Y -= 50.f;
+
+		// These FVectors will be populated with data on line 127 - 131
+		FVector CrosshairWorldPosition;
+		FVector CrosshairWorldDirection;
+		
+		// Get world position and direction of crosshairs
+		bool bScreenToWorld = UGameplayStatics::DeprojectScreenToWorld(UGameplayStatics::GetPlayerController(this, 0,
+			CrosshairLocation,
+			CrosshairWorldPosition,
+			CrosshairWorldDirection);
+
+		if (bScreenToWorld)
+		{
+			FHitResult ScreenTraceHit; // This FHitResult will be populated with data on line 140
+
+			const FVector Start{ CrosshairWorldPosition };
+			// End is equal to the start position of the crosshair facing in the forward direction and 50'000 units forward
+			const FVector End{ CrosshairWorldPosition + CrosshairWorldDirection * 50'000 };
+
+			// Set beam end point to line trace end point
+			FVector BeamEndPoint{ End };
+
+			// Trace outward from crosshairs world location
+			GetWorld()->LineTraceSingleByChannel(ScreenTraceHit, Start, End, ECollisionChannel::ECC_Visibility);
+				if (ScreenTraceHit.bBlockingHit) // was there a trace hit?
+				{
+					// This initializes BeamEndPoint to the location of the ScreenTraceHit
+					BeamEndPoint = ScreenTraceHit.Location;
+
+					if (ImpactParticles)
+					{
+						// Spawn impact particles
+						UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, ScreenTraceHit.Location);
+
+					}
+				}
+				if (BeamParticles)
+				{
+					// This spawns the beam from the Socket to the end point
+					UParticleSystemComponent* Beam = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), BeamParticles, SocketTransform);
+
+					if (Beam)
+					{
+						Beam->SetVectorParameter(FName("Target"), BeamEndPoint);
+					}
+				}
+		}
+
+		/*
 		FHitResult FireHit;
 		const FVector Start{ SocketTransform.GetLocation() };
 
@@ -143,6 +203,7 @@ void AShooterCharacter::FireWeapon()
 				Beam->SetVectorParameter(FName("Target"), BeamEndPoint);
 			}
 		}
+		*/
 	}
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if (AnimInstance && HipFireMontage)
