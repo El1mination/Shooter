@@ -45,39 +45,39 @@ public:
 private:
 	// Camera boom posititioning the camera behind the character
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
-	class USpringArmComponent* CameraBoom;
+		class USpringArmComponent* CameraBoom;
 
 	// Camera that follows the characetr
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
-	class UCameraComponent* FollowCamera;
+		class UCameraComponent* FollowCamera;
 
 	// Base turn rate, in deg/sec. Other scaling may affect final turn rate
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
-	float BaseTurnRate;
+		float BaseTurnRate;
 
 	// Base look up/down rate, in deg/sec. Other scaling may affect final turn rate
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
-	float BaseLookUpRate;
+		float BaseLookUpRate;
 
 	// Randomized gunshot sound cue
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
-	class USoundCue* FireSound;
+		class USoundCue* FireSound;
 
 	// Flash spawned at BarrelSocket
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
-	class UParticleSystem* MuzzleFlash;
+		class UParticleSystem* MuzzleFlash;
 
 	// Montage for firing weapon
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
-	class UAnimMontage* HipFireMontage;
+		class UAnimMontage* HipFireMontage;
 
 	// Particles spawned upon bullet impact
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
-	UParticleSystem* ImpactParticles;
+		UParticleSystem* ImpactParticles;
 
 	// Smoke trail for bullets
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
-	UParticleSystem* BeamParticles;
+		UParticleSystem* BeamParticles;
 
 public:
 	// Creates a USpringArmComponent that returns CameraBoom
