@@ -105,6 +105,7 @@ void AShooterCharacter::FireWeapon()
 
 		if (MuzzleFlash)
 		{
+			// Spawns muzzle flash
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), MuzzleFlash, SocketTransform);
 		}
 
@@ -168,6 +169,9 @@ void AShooterCharacter::FireWeapon()
 		}
 
 		/*
+		
+		!!! This is another way of firing but it would fire from the gun socket instead of the crosshair !!!
+		
 		FHitResult FireHit;
 		const FVector Start{ SocketTransform.GetLocation() };
 
