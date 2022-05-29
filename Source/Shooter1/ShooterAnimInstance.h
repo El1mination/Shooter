@@ -36,5 +36,9 @@ private:
 	// Whether or not the character is moving
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
 	bool bIsAccelerating;
+
+	// Offset yaw used for stafing
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float MovementOffsetYaw;
 	
 };
