@@ -294,6 +294,21 @@ void AShooterCharacter::LookUp(float Value)
 	AddControllerPitchInput(Value * LookUpScaleFactor);
 }
 
+void AShooterCharacter::CalculateCrosshairsSpread(float DeltaTime)
+{
+	FVector2D WalkSpeedRange{ 0.f, 600.f }; // 0 is the slowest speed and 600 is the fastest speed we can go
+	FVector2D VelocityMultiplierRange{ 0.f, 1.f }; // VelocityMultiplierRange represents WalkSpeedRange but on a smaller scale from 0 - 1...
+	//... for example, if WalkSpeedRange is 300, VelocityMultiplierRaange will be 0.5
+	FVector Velocity{ GetVelocity() };
+	Velocity.Z = 0.f;
+
+	// CrosshairVelocityFactor 
+	CrosshairVelocityFactor = FMath::GetMappedRangeValueClamped(WalkSpeedRange, VelocityMultiplierRange, Velocity.Size());
+
+	// CrosshairVelocityFactor is a low number when moving slowly, but a high number when moving quickly
+	CrosshairSpreadMultiplier = 0.5f + CrosshairVelocityFactor;
+}
+
 // Called every frame
 void AShooterCharacter::Tick(float DeltaTime)
 {
@@ -303,6 +318,8 @@ void AShooterCharacter::Tick(float DeltaTime)
 	CameraInterpZoom(DeltaTime);
 	// Change look sensitivity based on aiming
 	SetLookRates();
+	// Calculate crosshair spread multiplier
+	CalculateCrosshairsSpread(DeltaTime);
 
 	
 }
@@ -330,4 +347,9 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 	PlayerInputComponent->BindAction("AimingButton", IE_Pressed, this, &AShooterCharacter::AimingButtonPressed);
 	PlayerInputComponent->BindAction("AimingButton", IE_Released, this, &AShooterCharacter::AimingButtonReleased);
+}
+
+float AShooterCharacter::GetCrosshairSpreadMultiplier() const
+{
+	return CrosshairSpreadMultiplier;
 }

@@ -52,6 +52,8 @@ protected:
 	// Rotate controller based on mouse Y movement
 	void LookUp(float Value);
 
+	void CalculateCrosshairsSpread(float DeltaTime);
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -144,6 +146,26 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
 	float ZoomInterpSpeed;
 
+	// Determines the spread of the crosshairs
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Crosshairs", meta = (AllowPrivateAccess = "true"))
+	float CrosshairSpreadMultiplier;
+
+	// Velocity component for the crosshairs spread
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Crosshairs", meta = (AllowPrivateAccess = "true"))
+	float CrosshairVelocityFactor;
+
+	// In air component for crosshairs spread
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Crosshairs", meta = (AllowPrivateAccess = "true"))
+	float CrosshairInAirFactor;
+
+	// Aim component for crosshairs spread
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Crosshairs", meta = (AllowPrivateAccess = "true"))
+	float CrosshairAimFactor;
+
+	// Shooting component for crosshairs spread
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Crosshairs", meta = (AllowPrivateAccess = "true"))
+	float CrosshairShootingFactor;
+
 public:
 	// Geters are used to get a function or variable that is private
 
@@ -151,4 +173,7 @@ public:
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; };
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; };
 	FORCEINLINE bool GetAiming() const { return bAiming; }
+
+	UFUNCTION(BlueprintCallable)
+	float GetCrosshairSpreadMultiplier() const;
 };
