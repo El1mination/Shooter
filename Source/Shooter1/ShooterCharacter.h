@@ -38,6 +38,20 @@ protected:
 
 	bool GetBeamEndLocation(const FVector& MuzzleSocketLocation, FVector& OutBeamLocation);
 
+	// Set bAiming to true or false with button press
+	void AimingButtonPressed();
+	void AimingButtonReleased();
+
+	void CameraInterpZoom( float DeltaTime);
+
+	//Set BaseTurnRate and BaseLookUpRate baased on aiming
+	void SetLookRates();
+	
+	// Rotate controller based on mouse X movement
+	void Turn(float Value);
+	// Rotate controller based on mouse Y movement
+	void LookUp(float Value);
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -61,6 +75,38 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
 		float BaseLookUpRate;
 
+	// Turn rate while not aiming
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
+	float HipTurnRate;
+
+	// Look up rate when not aiming
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
+	float HipLookUpRate;
+
+	// Turn rate when aiming
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
+	float AimingTurnRate;
+
+	// Look up rate when aiming
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
+	float AimingLookUpRate;
+
+	// Scale factor for mouse look sensitivity. Turn rate when not aiming.
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"), meta = (ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
+	float MouseHipTurnRate;
+
+	// Scale factor for mouse look sensitivity. Look up rate when not aiming.
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"), meta = (ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
+	float MouseHipLookUpRate;
+
+	// Scale factor for mouse look sensitivity. Turn rate when aiming.
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"), meta = (ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
+	float MouseAimingTurnRate;
+
+	// Scale factor for mouse look sensitivity. Look up rate aiming.
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"), meta = (ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
+	float MouseAimingLookUpRate;
+
 	// Randomized gunshot sound cue
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
 		class USoundCue* FireSound;
@@ -81,9 +127,28 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
 		UParticleSystem* BeamParticles;
 
+	// True when aiming, false when not aiming
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+	bool bAiming;
+
+	// Default camera field of view value
+	float CameraDefaultFOV;
+
+	//Field of view value for when zoomed in
+	float CameraZoomedFOV;
+
+	// Current field of view this frame
+	float CameraCurrentFOV;
+
+	// Interp speed for zooming when aiming
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+	float ZoomInterpSpeed;
+
 public:
-	// Creates a USpringArmComponent that returns CameraBoom
+	// Geters are used to get a function or variable that is private
+
+
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; };
-	// Creates a UCameraComponent that returns FollowCamera
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; };
+	FORCEINLINE bool GetAiming() const { return bAiming; }
 };

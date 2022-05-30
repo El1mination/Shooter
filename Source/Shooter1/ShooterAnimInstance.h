@@ -44,5 +44,8 @@ private:
 	// Offset yaw the frame before we stopped moving
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float LastMovementOffsetYaw;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
+	bool bAimingAnim;
 	
 };
